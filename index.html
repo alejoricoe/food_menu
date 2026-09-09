@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#111111" />
+  <title>TableView AR — Demo Restaurant</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.1.0/model-viewer.min.js"></script>
+</head>
+<body>
+  <main class="app-shell">
+    <video id="camera" class="camera" playsinline muted></video>
+    <div class="camera-placeholder" id="cameraPlaceholder">
+      <div class="brand-mark">TV</div>
+      <p>Camera preview is off</p>
+      <button id="cameraBtn" class="pill secondary">Enable camera preview</button>
+    </div>
+
+    <model-viewer id="viewer"
+      class="viewer"
+      src="assets/models/classic_burger.glb"
+      alt="3D preview of the selected dish"
+      camera-controls
+      shadow-intensity="1"
+      exposure="1.05"
+      environment-image="neutral"
+      interaction-prompt="none"
+      ar
+      ar-modes="webxr scene-viewer quick-look"
+      ar-scale="fixed">
+      <button slot="ar-button" id="nativeArButton" class="hidden-ar-button">Open AR</button>
+    </model-viewer>
+
+    <header class="topbar glass">
+      <div>
+        <div class="eyebrow">BISTRO DEMO</div>
+        <div class="table-label">Table <span id="tableNumber">14</span></div>
+      </div>
+      <button id="cartBtn" class="cart-button" aria-label="Open basket">🛒 <span id="cartCount">0</span></button>
+    </header>
+
+    <div class="placement-hint" id="placementHint">Drag to rotate preview · Tap AR to place at real scale</div>
+
+    <section class="menu-dock glass">
+      <div class="selected-line">
+        <div>
+          <h1 id="dishName">Classic Burger</h1>
+          <p id="dishMeta">Beef · cheddar · tomato · lettuce</p>
+        </div>
+        <strong id="dishPrice">€14.90</strong>
+      </div>
+
+      <div class="carousel" id="carousel" aria-label="Dish selector"></div>
+
+      <div class="actions">
+        <button id="detailsBtn" class="pill secondary">Details</button>
+        <button id="arBtn" class="pill primary">View on table</button>
+        <button id="addBtn" class="pill secondary">Add</button>
+      </div>
+    </section>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </main>
+
+  <div class="sheet-backdrop" id="backdrop"></div>
+
+  <section class="sheet" id="detailsSheet" aria-hidden="true">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head"><div><span class="eyebrow">DISH DETAILS</span><h2 id="detailName"></h2></div><button class="close" data-close>×</button></div>
+    <p id="detailDescription" class="description"></p>
+    <div id="ingredientChips" class="chips"></div>
+    <button id="customizeBtn" class="wide-button">Customize ingredients</button>
+  </section>
+
+  <section class="sheet" id="customizeSheet" aria-hidden="true">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head"><div><span class="eyebrow">CUSTOMIZE</span><h2 id="customName"></h2></div><button class="close" data-close>×</button></div>
+    <div id="optionsList" class="options-list"></div>
+    <button id="customAddBtn" class="wide-button">Add to order · <span id="customTotal"></span></button>
+  </section>
+
+  <section class="sheet cart-sheet" id="cartSheet" aria-hidden="true">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head"><div><span class="eyebrow">YOUR ORDER</span><h2>Table <span id="cartTable">14</span></h2></div><button class="close" data-close>×</button></div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-total"><span>Total</span><strong id="cartTotal">€0.00</strong></div>
+    <button id="sendOrderBtn" class="wide-button disabled" disabled>Send order — coming next</button>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
